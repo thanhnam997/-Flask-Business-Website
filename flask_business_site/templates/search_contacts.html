@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Contacts{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="mb-4">Search Contact Submissions</h1>
+        
+        <form class="mb-4" method="GET" action="{{ url_for('search_contacts') }}">
+            <div class="input-group">
+                <input type="text" class="form-control" name="q" value="{{ query }}" placeholder="Search by name, email or message content...">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        {% if contacts %}
+            <h2>Search Results</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Message</th>
+                        <th>Date Submitted</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contact in contacts %}
+                        <tr>
+                            <td>{{ contact.id }}</td>
+                            <td>{{ contact.name }}</td>
+                            <td>{{ contact.email }}</td>
+                            <td>{{ contact.message }}</td>
+                            <td>{{ contact.date_submitted.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% elif query %}
+            <div class="alert alert-info">No results found for "{{ query }}".</div>
+        {% else %}
+            <div class="alert alert-info">Enter a search term to find contact submissions.</div>
+        {% endif %}
+        
+        <a href="{{ url_for('view_contacts') }}" class="btn btn-secondary">View All Contacts</a>
+    </div>
+</div>
+{% endblock %}
